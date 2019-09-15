@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Airbnb housing in Amsterdam</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 540px;
+    }
+
+    /* Small devices (landscape phones, 576px and up) */
+    @media (min-width: 576px) {}
+
+    /* Medium devices (tablets, 768px and up) */
+    @media (min-width: 768px) {
+
+      aside {
+        height: 540px;
+      }
+    }
+
+    /* Large devices (desktops, 992px and up) */
+    @media (min-width: 992px) {}
+
+    /* Extra large devices (large desktops, 1200px and up) */
+    @media (min-width: 1200px) {}
+  </style>
+</head>
+
+<body class="bg-dark">
+
+  <div class="container-fluid">
+    <header class="row text-white py-3">
+      <div class="col mx-2">
+        <h1 class="">Airbnb housing in Amsterdam</h1>
+      </div>
+    </header>
+
+    <section class="row">
+      <div class="col-12 col-md-8 col-lg-9 px-0">
+        <div id="map"></div>
+      </div>
+      <aside id="about" class="col-12 col-md-4 col-lg-3 text-white py-2 bg-secondary overflow-auto">
+        <section>
+          <h2>AirBed and Breakfast:</h2>
+          <p>These days you no longer need luxury hotels. If you see Amsterdam, you can rent a house anywhere through Airbnb..</p>
+          <p>One downside is that Airbnb causes a lot of unrest due to overtourism. But one thing is certain that people have enough choice to choose any house style for a special vacation.</p>
+        </section>
+      </aside>
+    </section>
+    <footer class="row text-white py-3">
+      <div class="col mx-2">
+        <ul class="list-unstyled">
+          <li>Map authored by <a href="#">Etienne Sambo</a></li>
+          <li>September, 2019</li>
+          <li>Final project for Map674 Digital Mapping</li>
+          <li>data source: <a href="http://insideairbnb.com/index.html">http://insideairbnb.com/index.html</a></li>
+        </ul>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script>
+    // initial map options
+    var options = {
+      center: [52.365,4.890],
+      zoom: 11.5,
+      zoomSnap: .1
+    }
+
+    // instantiate the Leaflet map
+    var map = L.map('map', options);
+    
+      L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+    // load the data and send to drawMap function
+      d3.json('data/airbnb_data_all.json').then(drawMap);
+
+    function drawMap(data) {
+      // create a Leaflet GeoJSON object using the data and add it to the map
+    var geojsonMarkerOptions = {
+	    radius: 3,
+	    fillColor: "#ff7800",
+	    color: "#000",
+	    weight: 1,
+	    opacity: 1,
+	    fillOpacity: 0.8
+    };
+
+      const listing = L.geoJson(data,{
+        pointToLayer:function(feature,latlng){
+          return L.circleMarker(latlng, geojsonMarkerOptions);
+        }
+      }).addTo(map);
+
+      // loop through all the listing
+      listing.eachLayer(function (layer) {
+        // access the name for each
+        var popup="<p>"+
+          "<ul>"+
+          "<li>"+layer.feature.properties.name+"</li>"+
+          "<li>Type: "+layer.feature.properties.property_type+"</li>"+
+          "<li>Room type: "+layer.feature.properties.room_type+"</li>"+
+          "</ul>"+
+        "</p>";
+
+        // bind that name to a tooltip
+        layer.bindTooltip(popup);
+
+      });
+    }
+  </script>
+</body>
+
+</html>
