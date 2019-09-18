@@ -13,6 +13,10 @@
       height: 540px;
     }
 
+    .leaflet-tooltip ul {
+      padding-left: 12px;
+    }
+
     /* Small devices (landscape phones, 576px and up) */
     @media (min-width: 576px) {}
 
@@ -48,8 +52,10 @@
       <aside id="about" class="col-12 col-md-4 col-lg-3 text-white py-2 bg-secondary overflow-auto">
         <section>
           <h2>** AirBed and Breakfast **:</h2>
-          <p>These days you no longer need luxury hotels. If you see Amsterdam, you can rent a house anywhere through Airbnb..</p>
-          <p>One downside is that Airbnb causes a lot of unrest due to overtourism. But one thing is certain that people have enough choice to choose any house style for a special vacation.</p>
+          <p>These days you no longer need luxury hotels. If you see Amsterdam, you can rent a house anywhere through
+            Airbnb..</p>
+          <p>One downside is that Airbnb causes a lot of unrest due to overtourism. But one thing is certain that people
+            have enough choice to choose any house style for a special vacation.</p>
         </section>
       </aside>
     </section>
@@ -79,34 +85,34 @@
   <script>
     // initial map options
     var options = {
-      center: [52.365,4.890],
+      center: [52.365, 4.890],
       zoom: 11.5,
       zoomSnap: .1
     }
 
     // instantiate the Leaflet map
     var map = L.map('map', options);
-    
-      L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
+
+    L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
     // load the data and send to drawMap function
-      d3.json('data/airbnb_data_all.json').then(drawMap);
+    d3.json('data/airbnb_data_all.json').then(drawMap);
 
     function drawMap(data) {
       // create a Leaflet GeoJSON object using the data and add it to the map
-    var geojsonMarkerOptions = {
-	    radius: 3,
-	    fillColor: "#ff7800",
-	    color: "#000",
-	    weight: 1,
-	    opacity: 1,
-	    fillOpacity: 0.8
-    };
+      var geojsonMarkerOptions = {
+        radius: 3,
+        fillColor: "#ff7800",
+        color: "#000",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8
+      };
 
-      const listing = L.geoJson(data,{
-        pointToLayer:function(feature,latlng){
+      const listing = L.geoJson(data, {
+        pointToLayer: function (feature, latlng) {
           return L.circleMarker(latlng, geojsonMarkerOptions);
         }
       }).addTo(map);
@@ -114,13 +120,10 @@
       // loop through all the listing
       listing.eachLayer(function (layer) {
         // access the name for each
-        var popup="<p>"+"HALLO_HALLO"+"<br>"+
-          "<ul>"+
-          "<li>"+layer.feature.properties.name+"</li>"+
-          "<li>Type: "+layer.feature.properties.property_type+"</li>"+
-          "<li>Room type: "+layer.feature.properties.room_type+"</li>"+
-          "</ul>"+
-        "</p>";
+        var popup =
+          "<ul><li>" + layer.feature.properties.name + "</li><li>Type: " +
+          layer.feature.properties.property_type + "</li><li>Room type: " +
+          layer.feature.properties.room_type + "</li></ul>";
 
         // bind that name to a tooltip
         layer.bindTooltip(popup);
