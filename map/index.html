@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Airbnb housing in Amsterdam</title>
+  <title>Airbnb Housing in Amsterdam</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
@@ -41,7 +41,7 @@
   <div class="container-fluid">
     <header class="row text-white py-3">
       <div class="col mx-2">
-        <h1 class=""> Airbnb housing in Amsterdam</h1>
+        <h1 class=""> Airbnb Housing in Amsterdam</h1>
       </div>
     </header>
 
@@ -98,10 +98,7 @@
     }).addTo(map);
 
     // load the data and send to drawMap function
-    //d3.json('data/airbnb_data_all.json').then(drawMap);
       d3.json('data/airbnb_data_all.json').then(drawMap);
-    
-    //facilityCSV = d3.csv("data/facility-emissions-2016.csv")
 
     function drawMap(data) {
       // create a Leaflet GeoJSON object using the data and add it to the map
